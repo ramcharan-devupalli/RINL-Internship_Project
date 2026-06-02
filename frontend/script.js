@@ -187,7 +187,10 @@ otpForm.addEventListener("submit", async (e) => {
     }
 
     showForm("login");
-    showMessage("Email verified successfully. You can login now.", "success");
+    showMessage(
+      `Account created successfully. Your ID is ${data.employee_id}. Please save it and use it to login.`,
+      "success"
+    );
   } catch (error) {
     showMessage("Backend not reachable. Check if server is running.");
   }
@@ -196,7 +199,8 @@ otpForm.addEventListener("submit", async (e) => {
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById("loginEmail").value.trim();
+  const employee_id = document.getElementById("loginEmployeeId").value.trim();
+  const role = document.getElementById("loginRole").value;
   const password = document.getElementById("loginPassword").value;
 
   try {
@@ -206,7 +210,8 @@ loginForm.addEventListener("submit", async (e) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
+        employee_id,
+        role,
         password,
       }),
     });

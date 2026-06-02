@@ -7,6 +7,33 @@ const generateOtp = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
+const getRolePrefix = (role) => {
+  const prefixes = {
+    supervisor: "SUP",
+    contractor_representative: "CTR",
+    skilled_worker: "SKW",
+    semi_skilled_worker: "SSW",
+    unskilled_worker: "USW",
+    hr_admin: "ADM",
+  };
+
+  return prefixes[role] || "USR";
+};
+
+const generateEmployeeId = async (role) => {
+  const prefix = getRolePrefix(role);
+
+  const result = await pool.query(
+    "SELECT COUNT(*) FROM users WHERE role = $1 AND employee_id IS NOT NULL",
+    [role]
+  );
+
+  const count = parseInt(result.rows[0].count) + 1;
+  const padded = count.toString().padStart(4, "0");
+
+  return `RINL-${prefix}-${padded}`;
+};
+
 const signup = async (req, res) => {
   try {
     const { name, email, mobile, password, role } = req.body;
@@ -78,12 +105,33 @@ const verifyEmailOtp = async (req, res) => {
       return res.status(400).json({ message: "OTP expired" });
     }
 
-    await pool.query(
-      "UPDATE users SET email_verified = TRUE WHERE email = $1",
-      [email]
-    );
+    const userResult = await pool.query(
+  "SELECT * FROM users WHERE email = $1",
+  [email]
+);
 
-    res.json({ message: "Email verified successfully" });
+const user = userResult.rows[0];
+
+let employeeId = user.employee_id;
+
+if (!employeeId) {
+  employeeId = await generateEmployeeId(user.role);
+
+  await pool.query(
+    "UPDATE users SET email_verified = TRUE, employee_id = $1 WHERE email = $2",
+    [employeeId, email]
+  );
+} else {
+  await pool.query(
+    "UPDATE users SET email_verified = TRUE WHERE email = $1",
+    [email]
+  );
+}
+
+res.json({
+  message: "Email verified successfully",
+  employee_id: employeeId,
+});
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error during OTP verification" });
@@ -92,15 +140,15 @@ const verifyEmailOtp = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { employee_id, role, password } = req.body;
 
     const result = await pool.query(
-      "SELECT * FROM users WHERE email = $1",
-      [email]
+      "SELECT * FROM users WHERE employee_id = $1 AND role = $2",
+      [employee_id, role]
     );
 
     if (result.rows.length === 0) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid ID, role, or password" });
     }
 
     const user = result.rows[0];
@@ -112,7 +160,7 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid ID, role, or password" });
     }
 
     const token = jwt.sign(
