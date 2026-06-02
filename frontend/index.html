@@ -30,10 +30,10 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#features">Features</a></li>
-        <li><a href="#roles">Roles</a></li>
+        <li><a href="#roles">Workforce</a></li>
+        <li><a href="#foot">Contact</a></li>
       </ul>
 
       <button class="btn-login" id="openLoginBtn">Login / Signup</button>
@@ -206,28 +206,42 @@
         </div>
       </div>
     </section>
+
+    <section class="cta">
+      <div class="cta-inner">
+        <span class="section-tag">Get Started</span>
+        <h2 class="section-title">Ready to Manage Wages Digitally?</h2>
+        <p class="cta-desc">
+          Log in to the RINL Contractor Wage Portal to start generating accurate,
+          compliant wage sheets.
+        </p>
+        <button class="btn-login big-login" id="bottomLoginBtn">
+          🔐 Login to Wage Portal
+        </button>
+      </div>
+    </section>
   </main>
 
-  <footer>
+  <footer id="foot">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="rinl-name">RINL <span>Portal</span></div>
-        <div class="rinl-full">Contractor Wage Management System demo</div>
+        <div class="rinl-name">RINL · <span style="color:var(--gold)">VIZAG STEEL</span></div>
+        <div class="rinl-full">Rashtriya Ispat Nigam Limited<br>Visakhapatnam Steel Plant<br>A Navratna Govt. of India Enterprise</div>
       </div>
       <div class="footer-col">
-        <div class="footer-col-title">Modules</div>
-        <a href="#features">Authentication</a>
-        <a href="#features">Attendance</a>
-        <a href="#features">Wages</a>
+        <div class="footer-col-title">Quick Links</div>
+        <a href="#">Home</a><a href="#about">About RINL</a><a href="#features">Wage System</a><a href="#roles">Workforce</a>
       </div>
       <div class="footer-col">
-        <div class="footer-col-title">Roles</div>
-        <a href="#roles">Worker</a>
-        <a href="#roles">Contractor</a>
-        <a href="#roles">Admin</a>
+        <div class="footer-col-title">Contact</div>
+        <a href="#">IT Support: 0891-2518000</a><a href="#">HR Department: ext. 2200</a><a href="#">Contractor Cell: ext. 3100</a><a href="#">vizagsteel.com</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Ministry</div>
+        <a href="#">Ministry of Steel, GoI</a><a href="#">Navratna PSE</a><a href="#">ISO 9001:2015</a><a href="#">ISO 14001:2015</a>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 RINL Contractor Wage Management System · Internship Demo</div>
+    <div class="footer-bottom">© 2026 Rashtriya Ispat Nigam Limited (RINL) – Visakhapatnam Steel Plant. All Rights Reserved. &nbsp;|&nbsp; Contractor Wage Management System v1.0</div>
   </footer>
 
   <div class="overlay" id="authOverlay">
@@ -247,10 +261,12 @@
         <div class="err-box" id="messageBox"></div>
 
         <form id="loginForm" class="auth-form active">
+          <div class="govt-badge">🏛️ Government of India Enterprise · Secure Login</div>
+
           <div class="field">
             <label class="lbl" for="loginEmployeeId">Employee / Contractor ID</label>
             <div class="iw">
-              span class="ico">🪪</span>
+              <span class="ico">🪪</span>
               <input class="inp" id="loginEmployeeId" type="text" placeholder="e.g. RINL-SKW-0001" required />
             </div>
           </div>
@@ -258,27 +274,46 @@
           <div class="field">
             <label class="lbl" for="loginRole">Role</label>
             <div class="iw">
-              <span class="ico">⚙</span>
-                <select class="sel" id="loginRole" required>
-                  <option value="">Select role</option>
-                    <option value="supervisor">Supervisor</option>
-                    <option value="contractor_representative">Contractor Representative</option>
-                    <option value="skilled_worker">Skilled Worker</option>
-                    <option value="semi_skilled_worker">Semi-Skilled Worker</option>
-                    <option value="unskilled_worker">Unskilled Worker</option>
-                    <option value="hr_admin">HR / Admin</option>
-                </select>
+              <span class="ico">👥</span>
+              <select class="sel" id="loginRole" required>
+                <option value="">Select your role</option>
+                <option value="supervisor">Supervisor</option>
+                <option value="contractor_representative">Contractor Representative</option>
+                <option value="skilled_worker">Skilled Worker</option>
+                <option value="semi_skilled_worker">Semi-Skilled Worker</option>
+                <option value="unskilled_worker">Unskilled Worker</option>
+                <option value="hr_admin">HR/Admin</option>
+              </select>
             </div>
           </div>
+
+          <div class="field">
             <label class="lbl" for="loginPassword">Password</label>
-            <div class="iw"><span class="ico">🔒</span><input class="inp" id="loginPassword" type="password" placeholder="Enter password" required /></div>
+            <div class="iw">
+              <span class="ico">🔑</span>
+              <input class="inp" id="loginPassword" type="password" placeholder="Enter your password" required />
+            </div>
           </div>
+
+          <div class="field">
+            <label class="lbl">Send OTP Via</label>
+            <div class="otp-method-tabs">
+              <button type="button" class="method-tab" id="mobileOtpTab">📱 Mobile Number</button>
+              <button type="button" class="method-tab active" id="emailOtpTab">📧 Email Address</button>
+            </div>
+          </div>
+
           <div class="row-opts">
             <label class="remember"><input type="checkbox" /> Remember me</label>
             <button type="button" class="forgot" id="forgotBtn">Forgot password?</button>
           </div>
-          <button class="signin-btn" type="submit">Login</button>
-          <div class="switch-text">New user? <button type="button" id="showSignupBtn">Create account</button></div>
+
+          <button class="signin-btn" type="submit">Send OTP & Continue →</button>
+
+          <div class="switch-text">
+            New user?
+            <button type="button" id="showSignupBtn">Create Account</button>
+          </div>
         </form>
 
         <form id="signupForm" class="auth-form">

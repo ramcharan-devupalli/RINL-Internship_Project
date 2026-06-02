@@ -31,15 +31,22 @@ nav { background: var(--white); border-bottom: 3px solid var(--red); box-shadow:
 .btn-login, .btn-gold, .signin-btn { border: none; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: 0.2s; }
 .btn-login { background: var(--blue); color: #fff; padding: 9px 22px; font-size: 14px; }
 .btn-login:hover, .signin-btn:hover { background: var(--blue2); }
-.hero { background: linear-gradient(135deg, var(--blue) 0%, #001f5c 100%); color: #fff; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 50px 50px; }
+.hero {
+    background-image: url("hero_backgrnd.jpg");
+    background-size: cover;      /* fills the section */
+    background-position: center; /* centers the image */
+    background-repeat: no-repeat;
+    padding: 100px;
+    min-height: 600px;           /* section height */
+}
+.hero::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.322); height: 94.8%;}
 .hero-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 3rem; position: relative; z-index: 2; }
 .hero-left { flex: 1; }
-.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(245,168,0,0.15); border: 1px solid rgba(245,168,0,0.4); color: var(--gold); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 1.4rem; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7); color: rgb(255, 193, 7); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 1.4rem; }
 .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
-.hero-title { font-family: 'Rajdhani', sans-serif; font-size: clamp(34px, 5vw, 58px); font-weight: 700; line-height: 1.1; margin-bottom: 1rem; }
+.hero-title { font-family: 'Rajdhani', sans-serif; font-size: clamp(34px, 5vw, 58px); font-weight: 700; line-height: 1.1; margin-bottom: 1rem; color: rgb(255, 255, 255); text-shadow: 0 2px 8px rgba(0,0,0,0.5);}
 .hero-title span { color: var(--gold); }
-.hero-subtitle { font-size: 15px; color: rgba(255,255,255,0.75); line-height: 1.8; margin-bottom: 2rem; max-width: 560px; }
+.hero-subtitle { font-size: 15px; color: rgb(240, 240, 240);; line-height: 1.8; margin-bottom: 2rem; max-width: 560px; text-shadow: 0 1px 4px rgba(0,0,0,0.5);}
 .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 .btn-gold { background: var(--gold); color: #1a1000; padding: 12px 28px; font-size: 15px; }
 .btn-gold:hover { background: #e09500; transform: translateY(-1px); }
@@ -126,6 +133,130 @@ footer { background: var(--blue); color: rgba(255,255,255,0.7); }
 .otp-resend { text-align: center; font-size: 12px; color: var(--muted); margin-top: 1rem; }
 .resend-btn { background: none; border: none; font-size: 12px; color: var(--blue); font-weight: 600; cursor: pointer; }
 .back-btn { display: block; width: 100%; margin-top: 0.7rem; background: none; border: 1.5px solid var(--border); border-radius: 6px; padding: 9px; font-size: 13px; color: var(--muted); cursor: pointer; }
+.auth-form {
+  display: none;
+}
+
+.auth-form.active {
+  display: block;
+}
+
+.modal {
+  width: 395px;
+  border-radius: 0;
+}
+
+.modal-head {
+  background: #004a99;
+  padding: 1.3rem 1.6rem;
+}
+
+.modal-head-title {
+  font-size: 18px;
+  letter-spacing: 0.3px;
+}
+
+.modal-head-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+}
+
+.govt-badge {
+  background: #eaf3ff;
+  border: 1px solid #b7d1f3;
+  color: #004a99;
+  border-radius: 6px;
+  padding: 11px 14px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lbl {
+  letter-spacing: 2px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.inp,
+.sel {
+  height: 40px;
+  background: #f3f6fb;
+  border: 1px solid #d5deeb;
+}
+
+.otp-method-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.method-tab {
+  flex: 1;
+  padding: 10px 8px;
+  border: 1px solid #d5deeb;
+  background: #f3f6fb;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #667085;
+}
+
+.method-tab.active {
+  border-color: #004a99;
+  background: #eaf3ff;
+  color: #004a99;
+}
+
+.signin-btn {
+  background: #004a99;
+  letter-spacing: 3px;
+}
+
+.switch-text {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: #5a6070;
+}
+
+.switch-text button {
+  background: none;
+  border: none;
+  color: #004a99;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cta {
+  padding: 4rem 2rem;
+  background: #f4f7fc;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.cta-inner {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.cta .section-title {
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+
+.cta-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.big-login {
+  padding: 14px 34px;
+  font-size: 15px;
+}
+
 @media (max-width: 850px) {
   .topbar { padding: 8px 1rem; flex-direction: column; align-items: flex-start; }
   .nav-links { display: none; }

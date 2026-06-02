@@ -13,6 +13,7 @@ const showSignupBtn = document.getElementById("showSignupBtn");
 const showLoginBtn = document.getElementById("showLoginBtn");
 const backToSignupBtn = document.getElementById("backToSignupBtn");
 const resendOtpBtn = document.getElementById("resendOtpBtn");
+const bottomLoginBtn = document.getElementById("bottomLoginBtn");
 
 const modalTitle = document.getElementById("modalTitle");
 const modalSubtitle = document.getElementById("modalSubtitle");
@@ -20,6 +21,10 @@ const messageBox = document.getElementById("messageBox");
 const otpTarget = document.getElementById("otpTarget");
 
 const otpBoxes = document.querySelectorAll(".otp-box");
+const mobileOtpTab = document.getElementById("mobileOtpTab");
+const emailOtpTab = document.getElementById("emailOtpTab");
+
+let selectedOtpMethod = "email";
 
 let currentSignupEmail = "";
 
@@ -51,8 +56,8 @@ function showForm(formName) {
 
   if (formName === "login") {
     loginForm.classList.add("active");
-    modalTitle.textContent = "Login";
-    modalSubtitle.textContent = "Access your dashboard";
+    modalTitle.textContent = "RINL Wage Portal";
+    modalSubtitle.textContent = "Contractor Wage Management System";
   }
 
   if (formName === "signup") {
@@ -84,6 +89,23 @@ closeModalBtn.addEventListener("click", closeModal);
 showSignupBtn.addEventListener("click", () => showForm("signup"));
 showLoginBtn.addEventListener("click", () => showForm("login"));
 backToSignupBtn.addEventListener("click", () => showForm("signup"));
+if (bottomLoginBtn) {
+  bottomLoginBtn.addEventListener("click", () => openModal("login"));
+}
+
+emailOtpTab.addEventListener("click", () => {
+  selectedOtpMethod = "email";
+  emailOtpTab.classList.add("active");
+  mobileOtpTab.classList.remove("active");
+  clearMessage();
+});
+
+mobileOtpTab.addEventListener("click", () => {
+  selectedOtpMethod = "mobile";
+  mobileOtpTab.classList.add("active");
+  emailOtpTab.classList.remove("active");
+  showMessage("Mobile OTP is planned as a future enhancement.", "success");
+});
 
 otpBoxes.forEach((box, index) => {
   box.addEventListener("input", () => {
