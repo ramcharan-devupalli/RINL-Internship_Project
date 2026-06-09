@@ -39,7 +39,7 @@ nav { background: var(--white); border-bottom: 3px solid var(--red); box-shadow:
     padding: 100px;
     min-height: 600px;           /* section height */
 }
-.hero::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.322); height: 94.8%;}
+.hero::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.322); height: 102  %;}
 .hero-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 3rem; position: relative; z-index: 2; }
 .hero-left { flex: 1; }
 .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7); color: rgb(255, 193, 7); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 1.4rem; }

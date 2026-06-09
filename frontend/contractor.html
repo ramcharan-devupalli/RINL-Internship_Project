@@ -1,31 +1,248 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contractor Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="contractor.css" />
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Contractor</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">Add Worker</a>
-    <a href="#">Attendance</a>
-    <a href="#">Wage Report</a>
-    <button onclick="logout()">Logout</button>
-  </div>
-
-  <main>
-    <h1>Contractor Dashboard</h1>
-    <p id="welcome"></p>
-
-    <div class="cards">
-      <div class="card"><h3>My Workers</h3><p>34</p></div>
-      <div class="card"><h3>Present Today</h3><p>29</p></div>
-      <div class="card"><h3>Absent Today</h3><p>5</p></div>
-      <div class="card"><h3>Pending Wages</h3><p>₹42,000</p></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">R</div>
+      <div>
+        <h2>RINL Portal</h2>
+        <p>Contractor Dashboard</p>
+      </div>
     </div>
+
+    <nav>
+      <button class="nav-btn active" data-section="overview">Dashboard</button>
+      <button class="nav-btn" data-section="workers">Workers</button>
+      <button class="nav-btn" data-section="attendance">Attendance</button>
+      <button class="nav-btn" data-section="wages">Wages</button>
+      <button class="nav-btn" data-section="excel">Excel Import</button>
+      <button class="nav-btn" data-section="reports">Reports</button>
+      <button class="nav-btn" data-section="profile">Profile</button>
+    </nav>
+
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="welcomeText">Welcome back</p>
+      </div>
+      <div class="user-pill" id="userPill">Contractor</div>
+    </header>
+
+    <section class="content-section active" id="overview">
+      <div class="cards">
+        <div class="card">
+          <span>Total Workers</span>
+          <h2>0</h2>
+        </div>
+        <div class="card">
+          <span>Present Today</span>
+          <h2>0</h2>
+        </div>
+        <div class="card">
+          <span>Absent Today</span>
+          <h2>0</h2>
+        </div>
+        <div class="card">
+          <span>Monthly Wage Total</span>
+          <h2>₹0</h2>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+          <button data-section="workers">Add Worker</button>
+          <button data-section="attendance">Mark Attendance</button>
+          <button data-section="excel">Import Excel</button>
+          <button data-section="reports">Generate Report</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="workers">
+      <div class="section-grid">
+        <div class="panel">
+          <h3>Add Worker</h3>
+          <form id="workerForm">
+            <label>Worker Name</label>
+            <input type="text" id="workerName" required />
+
+            <label>Mobile Number</label>
+            <input type="tel" id="workerMobile" maxlength="10" required />
+
+            <label>Skill Type</label>
+            <select id="workerSkill" required>
+              <option value="">Select skill</option>
+              <option value="Skilled">Skilled</option>
+              <option value="Semi-Skilled">Semi-Skilled</option>
+              <option value="Unskilled">Unskilled</option>
+            </select>
+
+            <label>Daily Wage</label>
+            <input type="number" id="dailyWage" required />
+
+            <label>Aadhaar Last 4 Digits</label>
+            <input type="text" id="aadhaarLast4" maxlength="4" />
+
+            <button type="submit">Add Worker</button>
+          </form>
+        </div>
+
+        <div class="panel wide">
+          <h3>Worker List</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Skill</th>
+                <th>Daily Wage</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="workerTableBody">
+              <tr>
+                <td colspan="5">No workers added yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="attendance">
+      <div class="panel">
+        <h3>Mark Attendance</h3>
+        <label>Select Date</label>
+        <input type="date" id="attendanceDate" />
+
+        <table>
+          <thead>
+            <tr>
+              <th>Worker</th>
+              <th>Skill</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceTableBody">
+            <tr>
+              <td colspan="3">Add or import workers first.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="primary-btn">Save Attendance</button>
+      </div>
+    </section>
+
+    <section class="content-section" id="wages">
+      <div class="panel">
+        <h3>Wage Calculation</h3>
+        <p class="muted">Formula: Present Days × Daily Wage = Monthly Wage</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Worker</th>
+              <th>Present Days</th>
+              <th>Daily Wage</th>
+              <th>Total Wage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4">Wage data will appear after attendance is added.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section" id="excel">
+      <div class="section-grid">
+        <div class="panel">
+          <h3>Upload Worker Excel</h3>
+          <p class="muted">Import worker details from Excel file.</p>
+          <input type="file" accept=".xlsx,.xls,.csv" />
+          <button class="primary-btn">Upload Workers</button>
+        </div>
+
+        <div class="panel">
+          <h3>Upload Attendance Excel</h3>
+          <p class="muted">Import attendance records from Excel file.</p>
+          <input type="file" accept=".xlsx,.xls,.csv" />
+          <button class="primary-btn">Upload Attendance</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Expected Excel Format</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Worker Name</th>
+              <th>Mobile</th>
+              <th>Skill Type</th>
+              <th>Daily Wage</th>
+              <th>Attendance Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ramesh</td>
+              <td>9876543210</td>
+              <td>Skilled</td>
+              <td>650</td>
+              <td>2026-06-08</td>
+              <td>Present</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section" id="reports">
+      <div class="cards">
+        <div class="card">
+          <span>Attendance Report</span>
+          <h2>Monthly</h2>
+        </div>
+        <div class="card">
+          <span>Wage Report</span>
+          <h2>PDF/Excel</h2>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Reports</h3>
+        <button class="primary-btn">Generate Attendance Report</button>
+        <button class="primary-btn">Generate Wage Report</button>
+      </div>
+    </section>
+
+    <section class="content-section" id="profile">
+      <div class="panel profile-panel">
+        <h3>Contractor Profile</h3>
+        <p><strong>Name:</strong> <span id="profileName">-</span></p>
+        <p><strong>Email:</strong> <span id="profileEmail">-</span></p>
+        <p><strong>Mobile:</strong> <span id="profileMobile">-</span></p>
+        <p><strong>Employee ID:</strong> <span id="profileEmployeeId">-</span></p>
+        <p><strong>Role:</strong> <span id="profileRole">-</span></p>
+      </div>
+    </section>
   </main>
 
-  <script src="dashboard.js"></script>
+  <script src="contractor.js"></script>
 </body>
 </html>
