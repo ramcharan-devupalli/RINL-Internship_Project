@@ -18,8 +18,9 @@
 
     <nav>
       <button class="nav-btn active" data-section="overview">Dashboard</button>
+      <button class="nav-btn" data-section="contracts">Contracts</button>
       <button class="nav-btn" data-section="workers">Workers</button>
-      <button class="nav-btn" data-section="attendance">Attendance</button>
+      <button class="nav-btn" data-section="attendance">Monthly Muster</button>
       <button class="nav-btn" data-section="wages">Wages</button>
       <button class="nav-btn" data-section="excel">Excel Import</button>
       <button class="nav-btn" data-section="reports">Reports</button>
@@ -69,11 +70,78 @@
       </div>
     </section>
 
+    <section class="content-section" id="contracts">
+  <div class="section-grid">
+    <div class="panel">
+      <h3>Add Contract</h3>
+
+      <form id="contractForm">
+        <label>Job Code</label>
+        <input type="text" id="jobCd" required />
+
+        <label>Contractor Name</label>
+        <input type="text" id="contractorName" required />
+
+        <label>Contractor Address</label>
+        <input type="text" id="contractorAddress" />
+
+        <label>Contractor Phone</label>
+        <input type="tel" id="contractorPhone" maxlength="10" />
+
+        <label>Work Area</label>
+        <input type="text" id="workArea" />
+
+        <label>Party Code</label>
+        <input type="text" id="partyCd" />
+
+        <label>Department Code</label>
+        <input type="text" id="deptCd" />
+
+        <label>Job Description</label>
+        <textarea id="jobDesc"></textarea>
+
+        <label>Job Start Date</label>
+        <input type="date" id="jobStartDt" />
+
+        <label>Job End Date</label>
+        <input type="date" id="jobEndDt" />
+
+        <button type="submit">Add Contract</button>
+      </form>
+    </div>
+
+    <div class="panel wide">
+      <h3>Contract List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Job Code</th>
+            <th>Contractor</th>
+            <th>Work Area</th>
+            <th>Department</th>
+            <th>Period</th>
+          </tr>
+        </thead>
+        <tbody id="contractTableBody">
+          <tr>
+            <td colspan="5">No contracts added yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
     <section class="content-section" id="workers">
       <div class="section-grid">
         <div class="panel">
           <h3>Add Worker</h3>
           <form id="workerForm">
+            <label>Contract / Job Code</label>
+            <select id="workerJobCd" required>
+              <option value="">Select contract</option>
+            </select>
+            
             <label>Worker Name</label>
             <input type="text" id="workerName" required />
 
@@ -122,26 +190,46 @@
 
     <section class="content-section" id="attendance">
       <div class="panel">
-        <h3>Mark Attendance</h3>
-        <label>Select Date</label>
-        <input type="date" id="attendanceDate" />
+        <h3>Monthly Muster</h3>
+
+        <label>Select Contract</label>
+        <select id="musterJobCd">
+          <option value="">Select contract</option>
+        </select>
+
+        <label>Select Month</label>
+        <input type="month" id="musterMonth" />
+
+        <button class="primary-btn" id="loadMusterWorkersBtn">
+          Load Workers
+        </button>
+      </div>
+
+      <div class="panel">
+        <h3>Muster Entry</h3>
 
         <table>
           <thead>
             <tr>
               <th>Worker</th>
               <th>Skill</th>
-              <th>Status</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Weekly Off</th>
+              <th>Holiday</th>
+              <th>Leave</th>
             </tr>
           </thead>
-          <tbody id="attendanceTableBody">
+          <tbody id="musterTableBody">
             <tr>
-              <td colspan="3">Add or import workers first.</td>
+              <td colspan="7">Select contract and month to load workers.</td>
             </tr>
           </tbody>
         </table>
 
-        <button class="primary-btn">Save Attendance</button>
+        <button class="primary-btn" id="saveMusterBtn">
+          Save Monthly Muster
+        </button>
       </div>
     </section>
 

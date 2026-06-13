@@ -280,3 +280,16 @@ th {
     grid-template-columns: 1fr;
   }
 }
+textarea {
+  padding: 11px 12px;
+  border: 1px solid #d5deeb;
+  border-radius: 7px;
+  outline: none;
+  background: #f7f9fd;
+  resize: vertical;
+  min-height: 80px;
+}
+
+textarea:focus {
+  border-color: #003f8a;
+}

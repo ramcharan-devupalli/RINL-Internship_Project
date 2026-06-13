@@ -252,10 +252,12 @@ loginForm.addEventListener("submit", async (e) => {
     showMessage("Login successful", "success");
 
     setTimeout(() => {
-      if (data.user.role === "admin") {
+      if (data.user.role === "hr_admin") {
         window.location.href = "admin.html";
-      } else if (data.user.role === "contractor") {
+      } else if (data.user.role === "contractor_representative") {
         window.location.href = "contractor.html";
+      } else if (data.user.role === "supervisor") {
+        window.location.href = "worker.html";
       } else {
         window.location.href = "worker.html";
       }
