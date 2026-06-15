@@ -21,7 +21,7 @@
       <button class="nav-btn" data-section="contracts">Contracts</button>
       <button class="nav-btn" data-section="workers">Workers</button>
       <button class="nav-btn" data-section="attendance">Monthly Muster</button>
-      <button class="nav-btn" data-section="wages">Wages</button>
+      <button class="nav-btn" data-section="wages">Wage Sheet</button>
       <button class="nav-btn" data-section="excel">Excel Import</button>
       <button class="nav-btn" data-section="reports">Reports</button>
       <button class="nav-btn" data-section="profile">Profile</button>
@@ -150,11 +150,12 @@
 
             <label>Skill Type</label>
             <select id="workerSkill" required>
-              <option value="">Select skill</option>
-              <option value="Skilled">Skilled</option>
-              <option value="Semi-Skilled">Semi-Skilled</option>
-              <option value="Unskilled">Unskilled</option>
-            </select>
+              <option value="">Select Skill</option>
+              <option value="SK">Skilled</option>
+              <option value="SSK">Semi-Skilled</option>
+              <option value="USK">Unskilled</option>
+              <option value="SUP">Supervisor</option>
+          </select>
 
             <label>Daily Wage</label>
             <input type="number" id="dailyWage" required />
@@ -235,21 +236,38 @@
 
     <section class="content-section" id="wages">
       <div class="panel">
-        <h3>Wage Calculation</h3>
-        <p class="muted">Formula: Present Days × Daily Wage = Monthly Wage</p>
+        <h3>Generate Wage Sheet</h3>
+
+        <label>Select Contract</label>
+        <select id="wageJobCd">
+          <option value="">Select contract</option>
+        </select>
+
+        <label>Select Month</label>
+        <input type="month" id="wageMonth" />
+
+        <button class="primary-btn" id="generateWageBtn">
+          Generate Wage Sheet
+        </button>
+      </div>
+
+      <div class="panel">
+        <h3>Wage Sheet</h3>
 
         <table>
           <thead>
             <tr>
               <th>Worker</th>
-              <th>Present Days</th>
+              <th>Aadhaar ID</th>
+              <th>Skill</th>
+              <th>Present</th>
               <th>Daily Wage</th>
               <th>Total Wage</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="wageTableBody">
             <tr>
-              <td colspan="4">Wage data will appear after attendance is added.</td>
+              <td colspan="6">Select contract and month to generate wage sheet.</td>
             </tr>
           </tbody>
         </table>

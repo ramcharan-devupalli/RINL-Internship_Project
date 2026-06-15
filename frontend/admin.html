@@ -1,32 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
-  <div class="sidebar">
-    <h2>RINL Admin</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">Approvals</a>
-    <a href="#">Contractors</a>
-    <a href="#">Workers</a>
-    <a href="#">Reports</a>
-    <button onclick="logout()">Logout</button>
-  </div>
-
-  <main>
-    <h1>Admin Dashboard</h1>
-    <p id="welcome"></p>
-
-    <div class="cards">
-      <div class="card"><h3>Pending Approvals</h3><p>12</p></div>
-      <div class="card"><h3>Total Contractors</h3><p>8</p></div>
-      <div class="card"><h3>Total Workers</h3><p>126</p></div>
-      <div class="card"><h3>Reports Generated</h3><p>24</p></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">WS</div>
+      <div>
+        <h2>Admin WageSheet</h2>
+        <p>Contract · Workforce · Payroll</p>
+      </div>
     </div>
+
+    <p class="side-label">ADMIN SIDEBAR</p>
+
+    <button class="nav-btn active" data-section="dashboard">Dashboard <span>Home KPIs</span></button>
+    <button class="nav-btn" data-section="users">User Management <span>Users · Roles · Status</span></button>
+    <button class="nav-btn" data-section="contracts">Contract Management <span>Contracts · Work Orders</span></button>
+    <button class="nav-btn" data-section="workers">Worker Management <span>Workers · Skills</span></button>
+    <button class="nav-btn" data-section="muster">Monthly Muster <span>Attendance Summary</span></button>
+    <button class="nav-btn" data-section="wages">Wage Expenses <span>Payroll Analytics</span></button>
+    <button class="nav-btn" data-section="settings">Settings <span>Wage Rates</span></button>
+    <button class="nav-btn" data-section="profile">Profile <span>Admin Account</span></button>
+
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="pageTitle">Admin Dashboard Home</h1>
+        <p>High-level control room for contractors, workers, muster and wage sheets.</p>
+      </div>
+      <input id="globalSearch" placeholder="Search users, contracts, workers..." />
+    </header>
+
+    <section id="dashboard" class="section active">
+      <div class="kpi-grid">
+        <div class="kpi blue"><span>Total Users</span><h2 id="totalUsers">0</h2><p>Registered portal users</p></div>
+        <div class="kpi teal"><span>Total Contracts</span><h2 id="totalContracts">0</h2><p>Work orders/contracts</p></div>
+        <div class="kpi orange"><span>Total Workers</span><h2 id="totalWorkers">0</h2><p>Workers in system</p></div>
+        <div class="kpi pink"><span>Muster Entries</span><h2 id="totalMuster">0</h2><p>Monthly attendance records</p></div>
+        <div class="kpi purple"><span>Total Wage</span><h2 id="totalWage">₹0</h2><p>Calculated payroll amount</p></div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>Dashboard Overview</h3>
+          <ul>
+            <li>Monitor total users and roles</li>
+            <li>Track contracts and worker count</li>
+            <li>View payroll generated from monthly muster</li>
+            <li>Manage wage rates from settings</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Quick Actions</h3>
+          <div class="quick-grid">
+            <button data-section="users">View Users</button>
+            <button data-section="contracts">View Contracts</button>
+            <button data-section="workers">View Workers</button>
+            <button data-section="wages">Wage Expense</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="users" class="section">
+      <div class="panel">
+        <h3>User Management</h3>
+        <select id="roleFilter">
+          <option value="">All Roles</option>
+          <option value="hr_admin">HR/Admin</option>
+          <option value="contractor_representative">Contractor Representative</option>
+          <option value="supervisor">Supervisor</option>
+          <option value="skilled_worker">Skilled Worker</option>
+          <option value="semi_skilled_worker">Semi-Skilled Worker</option>
+          <option value="unskilled_worker">Unskilled Worker</option>
+        </select>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th><th>Status</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="contracts" class="section">
+      <div class="panel">
+        <h3>Contract Management</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Job Code</th><th>Contractor</th><th>Phone</th><th>Work Area</th><th>Dept</th><th>Period</th>
+            </tr>
+          </thead>
+          <tbody id="contractsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="workers" class="section">
+      <div class="panel">
+        <h3>Worker Management</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Aadhaar ID</th><th>Name</th><th>Job Code</th><th>Designation</th><th>Skill</th><th>Gender</th>
+            </tr>
+          </thead>
+          <tbody id="workersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="muster" class="section">
+      <div class="panel">
+        <h3>Monthly Muster</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Worker</th><th>Job Code</th><th>Month</th><th>P</th><th>A</th><th>WO</th><th>H</th><th>L</th>
+            </tr>
+          </thead>
+          <tbody id="musterBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="wages" class="section">
+      <div class="panel">
+        <h3>Monthly Wage Expense Analysis</h3>
+
+        <label>Select Month</label>
+        <input type="month" id="expenseMonth" />
+
+        <button id="loadExpenseBtn">
+          Load Expense Report
+        </button>
+      </div>
+
+      <div class="panel">
+        <h3>Job-wise Wage Expenses</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Job Code</th>
+              <th>Contractor</th>
+              <th>Workers</th>
+              <th>Present Days</th>
+              <th>Expense</th>
+            </tr>
+          </thead>
+
+          <tbody id="expenseBody">
+            <tr>
+              <td colspan="5">
+                Select a month to view wage expenses.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div
+          style="
+          margin-top:20px;
+          font-size:22px;
+          font-weight:700;
+          color:#0f4c97;"
+        >
+          Total Monthly Expense:
+          <span id="totalExpense">
+            ₹0
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="settings" class="section">
+      <div class="panel">
+        <h3>Wage Rate Settings</h3>
+        <table>
+          <thead>
+            <tr><th>Skill</th><th>Daily Wage</th><th>Update</th></tr>
+          </thead>
+          <tbody id="ratesBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="profile" class="section">
+      <div class="panel profile">
+        <h3>Admin Profile</h3>
+        <p><strong>Name:</strong> <span id="profileName">-</span></p>
+        <p><strong>Email:</strong> <span id="profileEmail">-</span></p>
+        <p><strong>Employee ID:</strong> <span id="profileEmployeeId">-</span></p>
+        <p><strong>Role:</strong> <span id="profileRole">-</span></p>
+      </div>
+    </section>
   </main>
 
-  <script src="dashboard.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>

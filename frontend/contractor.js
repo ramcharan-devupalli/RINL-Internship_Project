@@ -12,6 +12,11 @@ const loadMusterWorkersBtn = document.getElementById("loadMusterWorkersBtn");
 const musterTableBody = document.getElementById("musterTableBody");
 const saveMusterBtn = document.getElementById("saveMusterBtn");
 
+const wageJobCd = document.getElementById("wageJobCd");
+const wageMonth = document.getElementById("wageMonth");
+const generateWageBtn = document.getElementById("generateWageBtn");
+const wageTableBody = document.getElementById("wageTableBody");
+
 let selectedMusterWorkers = [];
 
 if (!token || !user) {
@@ -228,9 +233,36 @@ function renderContracts() {
     .join("");
 }
 
+function renderWageSheet(wages) {
+  if (wages.length === 0) {
+    wageTableBody.innerHTML = `
+      <tr>
+        <td colspan="6">No wage data found for selected contract and month.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  wageTableBody.innerHTML = wages
+    .map(
+      (row) => `
+      <tr>
+        <td>${row.worker_name}</td>
+        <td>${row.adhar_id}</td>
+        <td>${row.worker_skill}</td>
+        <td>${row.present}</td>
+        <td>₹${Number(row.daily_wage).toFixed(2)}</td>
+        <td><strong>₹${Number(row.total_wage).toFixed(2)}</strong></td>
+      </tr>
+    `
+    )
+    .join("");
+}
+
 function renderContractOptions() {
   workerJobCd.innerHTML = `<option value="">Select contract</option>`;
   musterJobCd.innerHTML = `<option value="">Select contract</option>`;
+  wageJobCd.innerHTML = `<option value="">Select contract</option>`;
 
   contracts.forEach((contract) => {
     const option = `
@@ -241,6 +273,7 @@ function renderContractOptions() {
 
     workerJobCd.innerHTML += option;
     musterJobCd.innerHTML += option;
+    wageJobCd.innerHTML += option;
   });
 }
 
@@ -336,6 +369,33 @@ saveMusterBtn.addEventListener("click", async () => {
   } catch (err) {
     console.error(err);
     alert("Error saving monthly muster");
+  }
+});
+
+generateWageBtn.addEventListener("click", async () => {
+  const jobCd = wageJobCd.value;
+  const month = wageMonth.value;
+
+  if (!jobCd || !month) {
+    alert("Please select contract and month.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${API_BASE}/wages?job_cd=${jobCd}&muster_month=${month}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Error generating wage sheet");
+    }
+
+    renderWageSheet(data);
+  } catch (err) {
+    console.error(err);
+    alert("Error generating wage sheet");
   }
 });
 
