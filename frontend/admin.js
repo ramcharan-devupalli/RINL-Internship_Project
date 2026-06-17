@@ -198,6 +198,10 @@ async function loadContracts() {
       <td>${c.work_area || "-"}</td>
       <td>${c.dept_cd || "-"}</td>
       <td>${formatDate(c.job_start_dt)} to ${formatDate(c.job_end_dt)}</td>
+      <td>
+        <button onclick="editContract('${c.job_cd}')">Edit</button>
+        <button onclick="deleteContract('${c.job_cd}')">Delete</button>
+      </td>
     </tr>
   `).join("");
 }
@@ -214,6 +218,10 @@ async function loadWorkers() {
       <td>${w.worker_desig || "-"}</td>
       <td>${w.worker_skill}</td>
       <td>${w.worker_gender || "-"}</td>
+      <td>
+        <button onclick="editWorker(${w.id})">Edit</button>
+        <button onclick="deleteWorker(${w.id})">Delete</button>
+      </td>
     </tr>
   `).join("");
 }
@@ -234,6 +242,94 @@ async function loadMuster() {
       <td>${m.leaves}</td>
     </tr>
   `).join("");
+}
+
+async function deleteContract(jobCd) {
+  if (!confirm(`Delete contract ${jobCd}?`)) return;
+
+  await fetch(`${API_BASE}/contracts/${jobCd}`, {
+    method: "DELETE",
+  });
+
+  alert("Contract deleted");
+  loadContracts();
+  loadStats();
+}
+
+async function editContract(jobCd) {
+  const contract = contracts.find(c => c.job_cd === jobCd);
+  if (!contract) return;
+
+  const contractor_name = prompt("Contractor Name", contract.contractor_name || "");
+  if (contractor_name === null) return;
+
+  const work_area = prompt("Work Area", contract.work_area || "");
+  if (work_area === null) return;
+
+  const dept_cd = prompt("Department Code", contract.dept_cd || "");
+  if (dept_cd === null) return;
+
+  await fetch(`${API_BASE}/contracts/${jobCd}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contractor_name,
+      contractor_address: contract.contractor_address,
+      contractor_phone: contract.contractor_phone,
+      work_area,
+      party_cd: contract.party_cd,
+      dept_cd,
+      job_desc: contract.job_desc,
+      job_start_dt: contract.job_start_dt,
+      job_end_dt: contract.job_end_dt,
+    }),
+  });
+
+  alert("Contract updated");
+  loadContracts();
+}
+
+async function deleteWorker(id) {
+  if (!confirm("Delete this worker?")) return;
+
+  await fetch(`${API_BASE}/workers/${id}`, {
+    method: "DELETE",
+  });
+
+  alert("Worker deleted");
+  loadWorkers();
+  loadStats();
+}
+
+async function editWorker(id) {
+  const worker = workers.find(w => w.id === id);
+  if (!worker) return;
+
+  const worker_name = prompt("Worker Name", worker.worker_name || "");
+  if (worker_name === null) return;
+
+  const worker_desig = prompt("Worker Designation", worker.worker_desig || "");
+  if (worker_desig === null) return;
+
+  const worker_skill = prompt("Skill Code: SK / SSK / USK / SUP", worker.worker_skill || "");
+  if (worker_skill === null) return;
+
+  await fetch(`${API_BASE}/workers/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      job_cd: worker.job_cd,
+      adhar_id: worker.adhar_id,
+      worker_name,
+      dob: worker.dob,
+      worker_desig,
+      worker_skill,
+      worker_gender: worker.worker_gender,
+    }),
+  });
+
+  alert("Worker updated");
+  loadWorkers();
 }
 
 
@@ -263,6 +359,70 @@ async function updateRate(skill) {
   loadRates();
   loadStats();
 }
+
+async function uploadExcel(fileInputId, endpoint, resultId, extraData = {}) {
+  const fileInput = document.getElementById(fileInputId);
+  const resultBox = document.getElementById(resultId);
+
+  if (!fileInput.files.length) {
+    alert("Please select an Excel file.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  Object.keys(extraData).forEach((key) => {
+    formData.append(key, extraData[key]);
+  });
+
+  try {
+    resultBox.textContent = "Uploading...";
+
+    const response = await fetch(`${API_BASE}/import/${endpoint}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Upload failed");
+    }
+
+    resultBox.textContent =
+      `Success: ${data.inserted} imported, ${data.skipped} skipped`;
+
+    loadStats();
+    loadContracts();
+    loadWorkers();
+    loadMuster();
+  } catch (err) {
+    console.error(err);
+    resultBox.textContent = "Upload failed.";
+  }
+}
+
+document.getElementById("uploadContractExcel").addEventListener("click", () => {
+  uploadExcel("contractExcel", "contracts", "contractUploadResult");
+});
+
+document.getElementById("uploadWorkerExcel").addEventListener("click", () => {
+  uploadExcel("workerExcel", "workers", "workerUploadResult");
+});
+
+document.getElementById("uploadMusterExcel").addEventListener("click", () => {
+  const month = document.getElementById("musterImportMonth").value;
+
+  if (!month) {
+    alert("Please select month for muster import.");
+    return;
+  }
+
+  uploadExcel("musterExcel", "muster", "musterUploadResult", {
+    month,
+  });
+});
 
 function formatDate(date) {
   if (!date) return "-";

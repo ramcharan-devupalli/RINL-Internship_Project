@@ -24,6 +24,10 @@
     <button class="nav-btn" data-section="workers">Worker Management <span>Workers · Skills</span></button>
     <button class="nav-btn" data-section="muster">Monthly Muster <span>Attendance Summary</span></button>
     <button class="nav-btn" data-section="wages">Wage Expenses <span>Payroll Analytics</span></button>
+    <button class="nav-btn" data-section="excel">
+      Excel Upload
+      <span>Import Data Files</span>
+    </button>
     <button class="nav-btn" data-section="settings">Settings <span>Wage Rates</span></button>
     <button class="nav-btn" data-section="profile">Profile <span>Admin Account</span></button>
 
@@ -100,7 +104,7 @@
         <table>
           <thead>
             <tr>
-              <th>Job Code</th><th>Contractor</th><th>Phone</th><th>Work Area</th><th>Dept</th><th>Period</th>
+              <th>Job Code</th><th>Contractor</th><th>Phone</th><th>Work Area</th><th>Dept</th><th>Period</th><th>Actions</th>
             </tr>
           </thead>
           <tbody id="contractsBody"></tbody>
@@ -114,7 +118,7 @@
         <table>
           <thead>
             <tr>
-              <th>Aadhaar ID</th><th>Name</th><th>Job Code</th><th>Designation</th><th>Skill</th><th>Gender</th>
+              <th>Aadhaar ID</th><th>Name</th><th>Job Code</th><th>Designation</th><th>Skill</th><th>Gender</th><th>Actions</th>
             </tr>
           </thead>
           <tbody id="workersBody"></tbody>
@@ -182,6 +186,40 @@
           <span id="totalExpense">
             ₹0
           </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="excel" class="section">
+      <div class="panel">
+        <h3>Excel Data Import</h3>
+        <p>Upload Contract Master, Worker Details, and Monthly Muster Excel files.</p>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>Contract Master Excel</h3>
+          <input type="file" id="contractExcel" accept=".xls,.xlsx" />
+          <button id="uploadContractExcel">Upload Contracts</button>
+          <p id="contractUploadResult"></p>
+        </div>
+
+        <div class="panel">
+          <h3>Worker Details Excel</h3>
+          <input type="file" id="workerExcel" accept=".xls,.xlsx" />
+          <button id="uploadWorkerExcel">Upload Workers</button>
+          <p id="workerUploadResult"></p>
+        </div>
+
+        <div class="panel">
+          <h3>Monthly Muster Excel</h3>
+          <input type="file" id="musterExcel" accept=".xls,.xlsx" />
+
+          <label>Select Month</label>
+          <input type="month" id="musterImportMonth" />
+
+          <button id="uploadMusterExcel">Upload Muster</button>
+          <p id="musterUploadResult"></p>
         </div>
       </div>
     </section>
