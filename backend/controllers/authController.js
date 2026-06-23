@@ -52,12 +52,14 @@ const signup = async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
+    const employeeId = await generateEmployeeId(role);
+
 
     await pool.query(
       `INSERT INTO users 
-       (name, email, mobile, password_hash, role) 
-       VALUES ($1, $2, $3, $4, $5)`,
-      [name, email, mobile, passwordHash, role]
+      (name, email, mobile, password_hash, role, employee_id) 
+      VALUES ($1, $2, $3, $4, $5, $6)`,
+      [name, email, mobile, passwordHash, role, employeeId]
     );
 
     const otp = generateOtp();
@@ -68,16 +70,19 @@ const signup = async (req, res) => {
       [email, otp, expiresAt]
     );
 
-    await sendEmail(
-    email,
-  "Worker Portal Email Verification OTP",
-  `Your OTP for Worker Portal signup is ${otp}. It is valid for 10 minutes.`
-);
+    console.log(`Signup OTP for ${email}: ${otp}`);
 
-console.log("Email OTP sent:", otp);
+    sendEmail(
+      email,
+      "Worker Portal Email Verification OTP",
+      `Your OTP for Worker Portal signup is ${otp}. It is valid for 10 minutes.`
+    ).catch((err) => {
+      console.error("Email sending failed:", err.message);
+    });
 
 res.status(201).json({
-  message: "Signup successful. OTP sent to email."
+  message: "Signup successful. OTP sent to email.",
+  employee_id: employeeId
 });
   } catch (err) {
     console.error(err);

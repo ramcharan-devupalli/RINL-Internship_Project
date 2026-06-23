@@ -257,9 +257,15 @@ loginForm.addEventListener("submit", async (e) => {
       } else if (data.user.role === "contractor_representative") {
         window.location.href = "contractor.html";
       } else if (data.user.role === "supervisor") {
+      window.location.href = "supervisor.html";
+      } else if (
+        data.user.role === "skilled_worker" ||
+        data.user.role === "semi_skilled_worker" ||
+        data.user.role === "unskilled_worker"
+      ) {
         window.location.href = "worker.html";
       } else {
-        window.location.href = "worker.html";
+        alert("Unknown role. Please contact admin.");
       }
     }, 800);
   } catch (error) {

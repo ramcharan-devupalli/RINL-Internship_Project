@@ -6,6 +6,9 @@ const musterRoutes = require("./routes/musterRoutes");
 const wageRoutes = require("./routes/wageRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const importRoutes = require("./routes/importRoutes")
+const workerDashboardRoutes = require("./routes/workerDashboardRoutes");
+const leaveRoutes = require("./routes/leaveRoutes");
+const supervisorRoutes = require("./routes/supervisorRoutes");
 require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
@@ -22,6 +25,9 @@ app.use("/api/muster", musterRoutes);
 app.use("/api/wages", wageRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/import", importRoutes);
+app.use("/api/worker", workerDashboardRoutes);
+app.use("/api/leaves", leaveRoutes);
+app.use("/api/supervisor", supervisorRoutes);
 
 app.get("/", (req, res) => {
   res.send("Worker Portal Backend Running");
